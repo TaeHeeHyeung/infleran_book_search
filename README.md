@@ -11,4 +11,4 @@ Practice2C- Android App Architecture 기반 구축하기 (Repository, ViewModel,
 
 - secret gradle plugin: APK 같은 코드 외부로 부터 숨기기
 
-Practice2D- 검색결과를 UI에 표시하기 구현 예정
+Practice2D-검색결과를 UI에 표시하기 (Coil, ListAdapter, SaveStateHandle)

@@ -10,7 +10,7 @@ import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModelProviderFactory
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var bookSearchViewModel: BookSearchViewModel
+    lateinit var bookSearchViewModel: BookSearchViewModel
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -25,8 +25,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         val bookSearchRepository = BookSearchRepositoryImpl()
-        val factory = BookSearchViewModelProviderFactory(bookSearchRepository)
+        val factory = BookSearchViewModelProviderFactory(bookSearchRepository, this)
         bookSearchViewModel = ViewModelProvider(this, factory)[BookSearchViewModel::class.java]
+
+
     }
 
     private fun setupBottomNavigationView() {
