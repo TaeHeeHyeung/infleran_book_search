@@ -1,13 +1,11 @@
 package com.project.infleran_booksearchapp.test.list_adapter.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.infleran_booksearchapp.databinding.BookItemBinding
-import com.project.infleran_booksearchapp.test.DiffUtilTestActivity
 
 data class Data(val id: String)
 class BookAdapter2_ListAdatper() : ListAdapter<Data, BookHolder>(DiffCallback()) {

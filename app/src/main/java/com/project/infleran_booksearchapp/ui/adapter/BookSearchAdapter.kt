@@ -9,9 +9,9 @@ import com.project.infleran_booksearchapp.databinding.ItemBookPreviewBinding
 
 class BookSearchAdapter() : ListAdapter<Book, BookSearchViewHolder>(BookDiffCallback) {
     // 데이터 변경시 추가 하여 알림 (ListAdapter 기능)
-    override fun submitList(list: MutableList<Book>?) {
-        super.submitList(list)
-    }
+//    override fun submitList(list: MutableList<Book>?) {
+//        super.submitList(list)
+//    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookSearchViewHolder {
         return BookSearchViewHolder(
             ItemBookPreviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)

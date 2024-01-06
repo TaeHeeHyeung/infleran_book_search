@@ -1,4 +1,4 @@
-package com.project.infleran_booksearchapp.test
+package com.project.infleran_booksearchapp.test.list_adapter
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
