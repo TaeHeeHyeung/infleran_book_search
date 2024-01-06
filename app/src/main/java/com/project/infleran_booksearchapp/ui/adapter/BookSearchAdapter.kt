@@ -21,6 +21,16 @@ class BookSearchAdapter() : ListAdapter<Book, BookSearchViewHolder>(BookDiffCall
     override fun onBindViewHolder(holder: BookSearchViewHolder, position: Int) {
         val book = currentList[position]
         holder.bind(book)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(book) }
+        }
+    }
+
+
+    // 아이템 클릭시 부모 뷰에 데이터 반환 하기위한 리스너
+    private var onItemClickListener: ((Book) -> Unit)? = null
+    fun setOnItemClickListener(listener: ((Book) -> Unit)) {
+        onItemClickListener = listener
     }
 
     companion object {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.infleran_booksearchapp.databinding.FragmentSearchBinding
@@ -50,7 +51,11 @@ class SearchFragment : Fragment() {
 
     private fun setupRecyclerView() {
         bookSearchAdapter = BookSearchAdapter()
+        bookSearchAdapter.setOnItemClickListener {
 
+            val action = SearchFragmentDirections.actionFragmentSearchToFragmentBook(it)
+            findNavController().navigate(action)
+        }
         binding.rvSearchResult.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
