@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.data.model.SearchResponse
 import com.project.infleran_booksearchapp.data.repository.BookSearchRepository
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,16 @@ class BookSearchViewModel(
             response.body()?.let { body -> _searchResult.postValue(body) }
         }
     }
+
+    fun saveBook(book: Book) = viewModelScope.launch(Dispatchers.IO) {
+        bookSearchRepository.insertBook(book)
+    }
+
+    fun deleteBook(book: Book) = viewModelScope.launch(Dispatchers.IO) {
+        bookSearchRepository.deleteBook(book)
+    }
+
+    fun favoriteBooks(): LiveData<List<Book>> = bookSearchRepository.getFavoriteBooks()
 
     //
     var query = String()
