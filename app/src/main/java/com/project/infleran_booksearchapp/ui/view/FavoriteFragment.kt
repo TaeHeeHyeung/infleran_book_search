@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,6 +17,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.project.infleran_booksearchapp.databinding.FragmentFavoriteBinding
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchAdapter
 import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
+import com.project.infleran_booksearchapp.util.collectionLastStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment() {
 
@@ -38,9 +45,32 @@ class FavoriteFragment : Fragment() {
         setupRecyclerView()
         setupTouchHelper(view)
 
-        bookSearchViewModel.favoriteBooks().observe(viewLifecycleOwner) {
+//        bookSearchViewModel.favoriteBooks().observe(viewLifecycleOwner) {
+//            bookSearchAdapter.submitList(it)
+//        }
+
+
+        //Flow
+//        lifecycleScope.launch {
+//            bookSearchViewModel.favoriteBooks().collectLatest {
+//                bookSearchAdapter.submitList(it)
+//            }
+//        }
+
+        //StateFlow
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                bookSearchViewModel.favoriteBooks().collectLatest {
+//                    bookSearchAdapter.submitList(it)
+//                }
+//            }
+//        }
+
+        //remove boilerplate code
+        collectionLastStateFlow(bookSearchViewModel.favoriteBooks()){
             bookSearchAdapter.submitList(it)
         }
+
     }
 
     private fun setupRecyclerView() {
@@ -48,8 +78,14 @@ class FavoriteFragment : Fragment() {
 
         binding.rvFavoriteBook.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             adapter = bookSearchAdapter
         }
 
@@ -63,7 +99,11 @@ class FavoriteFragment : Fragment() {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.LEFT
         ) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
                 return true
             }
 

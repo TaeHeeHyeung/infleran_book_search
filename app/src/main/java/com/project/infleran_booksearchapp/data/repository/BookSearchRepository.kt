@@ -3,6 +3,7 @@ package com.project.infleran_booksearchapp.data.repository
 import androidx.lifecycle.LiveData
 import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.data.model.SearchResponse
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface BookSearchRepository {
@@ -19,5 +20,6 @@ interface BookSearchRepository {
 
     suspend fun deleteBook(book: Book)
 
-    fun getFavoriteBooks(): LiveData<List<Book>>
+//    fun getFavoriteBooks(): LiveData<List<Book>>
+    fun getFavoriteBooks(): Flow<List<Book>>
 }
