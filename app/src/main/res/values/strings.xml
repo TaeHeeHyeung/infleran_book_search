@@ -9,5 +9,6 @@
     <string name="book_info">Book Info</string>
     <string name="book">book</string>
     <string name="contentDescription">contentDescription</string>
+    <string name="sort_by">Sort by</string>
 
 </resources>

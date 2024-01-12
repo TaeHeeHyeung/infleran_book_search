@@ -13,11 +13,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BookSearchViewModel(
-    private val bookSearchRepository: BookSearchRepository, private val savedStateHandle: SavedStateHandle
+    private val bookSearchRepository: BookSearchRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _searchResult = MutableLiveData<SearchResponse>()
     val searchResult: LiveData<SearchResponse> get() = _searchResult
@@ -25,7 +28,8 @@ class BookSearchViewModel(
     //API
     fun searchBooks(query: String) = viewModelScope.launch(Dispatchers.IO) {
         val response = bookSearchRepository.searchBooks(
-            query, sort = "accuracy", 1, 15
+//            query, sort = "accuracy", 1, 15
+            query, getSortMode(), 1, 15
         )
         if (response.isSuccessful) {
             response.body()?.let { body -> _searchResult.postValue(body) }
@@ -40,12 +44,12 @@ class BookSearchViewModel(
         bookSearchRepository.deleteBook(book)
     }
 
-//    fun favoriteBooks(): LiveData<List<Book>> = bookSearchRepository.getFavoriteBooks()
+    //    fun favoriteBooks(): LiveData<List<Book>> = bookSearchRepository.getFavoriteBooks()
 //    fun favoriteBooks(): Flow<List<Book>> = bookSearchRepository.getFavoriteBooks()
     fun favoriteBooks(): StateFlow<List<Book>> = bookSearchRepository.getFavoriteBooks()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf())
 
-    //
+    // SaveStateHandle
     var query = String()
         set(value) {
             field = value
@@ -59,4 +63,14 @@ class BookSearchViewModel(
     companion object {
         private const val SAVE_STATE_KEY = "query"
     }
+
+    // DataStore
+    fun saveSortMode(value: String) = viewModelScope.launch(Dispatchers.IO) {
+        bookSearchRepository.saveSortMode(value)
+    }
+
+    suspend fun getSortMode() = withContext(Dispatchers.IO) {
+        bookSearchRepository.getSortMode().first()
+    }
+
 }
