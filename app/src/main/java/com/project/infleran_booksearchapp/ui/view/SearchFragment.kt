@@ -1,7 +1,11 @@
 package com.project.infleran_booksearchapp.ui.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +22,10 @@ import com.project.infleran_booksearchapp.util.Constants
 
 
 class SearchFragment : Fragment() {
+
+    private val TAG: String by lazy {
+        this@SearchFragment.javaClass.name
+    }
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -64,14 +72,17 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private var handler: Handler = Handler(Looper.getMainLooper())
+    private var runnable: Runnable? = null
     private fun searchBooks() {
-        var startTime: Long = System.currentTimeMillis()
-        var endTime: Long
-
         binding.etSearch.addTextChangedListener { text: Editable? ->
-            endTime = System.currentTimeMillis()
-            if (endTime - startTime >= Constants.SEARCH_BOOKS_TIME_DELAY) {
+            if (runnable != null) {
+                handler.removeCallbacks(runnable!!)
+            }
+            // 텍스트 입력 후 N 초 간 입력 없으면 검색 실행
+            runnable = Runnable {
                 text?.let {
+                    Log.d(TAG, "text:$it");
                     val query = text.toString().trim()
                     if (query.isNotEmpty()) {
                         bookSearchViewModel.searchBooks(text.toString())
@@ -79,7 +90,7 @@ class SearchFragment : Fragment() {
                     }
                 }
             }
-            startTime = endTime
+            handler.postDelayed(runnable!!, Constants.SEARCH_BOOKS_TIME_DELAY)
         }
     }
 

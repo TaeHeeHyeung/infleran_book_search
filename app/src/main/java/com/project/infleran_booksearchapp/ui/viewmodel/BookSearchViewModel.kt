@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.data.model.SearchResponse
 import com.project.infleran_booksearchapp.data.repository.BookSearchRepository
@@ -73,4 +75,11 @@ class BookSearchViewModel(
         bookSearchRepository.getSortMode().first()
     }
 
+
+    // Paging
+    val favoritePagingBook: StateFlow<PagingData<Book>> =
+        bookSearchRepository.getFavoritePagingBooks()
+            .cachedIn(viewModelScope)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(3000)
+                ,PagingData.empty())
 }

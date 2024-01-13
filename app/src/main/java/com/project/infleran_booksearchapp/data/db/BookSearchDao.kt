@@ -1,6 +1,7 @@
 package com.project.infleran_booksearchapp.data.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -21,4 +22,8 @@ interface BookSearchDao {
     @Query("SELECT * FROM books")
 //    fun getFavoriteBooks(): LiveData<List<Book>>
     fun getFavoriteBooks(): Flow<List<Book>>
+
+    @Query("SELECT * FROM books")
+    fun getFavoritePagingBooks(): PagingSource<Int, Book>
+
 }

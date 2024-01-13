@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.project.infleran_booksearchapp.databinding.FragmentFavoriteBinding
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchAdapter
+import com.project.infleran_booksearchapp.ui.adapter.BookSearchPagingAdapter
 import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.project.infleran_booksearchapp.util.collectionLastStateFlow
 import kotlinx.coroutines.flow.collect
@@ -29,7 +30,8 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var bookSearchViewModel: BookSearchViewModel
 
-    private lateinit var bookSearchAdapter: BookSearchAdapter
+    //    private lateinit var bookSearchAdapter: BookSearchAdapter
+    private lateinit var bookSearchAdapter: BookSearchPagingAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,14 +69,18 @@ class FavoriteFragment : Fragment() {
 //        }
 
         //remove boilerplate code
-        collectionLastStateFlow(bookSearchViewModel.favoriteBooks()){
-            bookSearchAdapter.submitList(it)
+//        collectionLastStateFlow(bookSearchViewModel.favoriteBooks()) {
+//            bookSearchAdapter.submitList(it)
+//        }
+        collectionLastStateFlow(bookSearchViewModel.favoritePagingBook) {
+            bookSearchAdapter.submitData(it)
         }
 
     }
 
     private fun setupRecyclerView() {
-        bookSearchAdapter = BookSearchAdapter()
+//        bookSearchAdapter = BookSearchAdapter()
+        bookSearchAdapter = BookSearchPagingAdapter()
 
         binding.rvFavoriteBook.apply {
             setHasFixedSize(true)
@@ -108,13 +114,23 @@ class FavoriteFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val book = bookSearchAdapter.currentList[viewHolder.bindingAdapterPosition]
-                bookSearchViewModel.deleteBook(book)
-                Snackbar.make(view, "item has deleted", Snackbar.LENGTH_SHORT).apply {
-                    setAction("Undo") {
-                        bookSearchViewModel.saveBook(book)
-                    }
-                }.show()
+//                val book = bookSearchAdapter.currentList[viewHolder.bindingAdapterPosition]
+//                bookSearchViewModel.deleteBook(book)
+//                Snackbar.make(view, "item has deleted", Snackbar.LENGTH_SHORT).apply {
+//                    setAction("Undo") {
+//                        bookSearchViewModel.saveBook(book)
+//                    }
+//                }.show()
+                val position = viewHolder.bindingAdapterPosition
+                val pagedBook = bookSearchAdapter.peek(position)
+                pagedBook?.let {
+                    bookSearchViewModel.deleteBook(pagedBook)
+                    Snackbar.make(view, "item has deleted", Snackbar.LENGTH_SHORT).apply {
+                        setAction("Undo") {
+                            bookSearchViewModel.saveBook(pagedBook)
+                        }
+                    }.show()
+                }
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).apply {
