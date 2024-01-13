@@ -13,12 +13,17 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.databinding.FragmentSearchBinding
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchAdapter
+import com.project.infleran_booksearchapp.ui.adapter.BookSearchPagingAdapter
 import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.project.infleran_booksearchapp.util.Constants
+import com.project.infleran_booksearchapp.util.collectionLastStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 class SearchFragment : Fragment() {
@@ -32,7 +37,11 @@ class SearchFragment : Fragment() {
 
 
     private lateinit var bookSearchViewModel: BookSearchViewModel
-    private lateinit var bookSearchAdapter: BookSearchAdapter
+//    private lateinit var bookSearchAdapter: BookSearchAdapter
+    private lateinit var bookSearchAdapter: BookSearchPagingAdapter
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,17 +57,24 @@ class SearchFragment : Fragment() {
         setupRecyclerView()
         searchBooks()
 
-        bookSearchViewModel.searchResult.observe(viewLifecycleOwner, Observer {
-            val books = it.documents
-            bookSearchAdapter.submitList(books)
-        })
+//        bookSearchViewModel.searchResult.observe(viewLifecycleOwner, Observer {
+//            val books = it.documents
+//            bookSearchAdapter.submitList(books)
+//        })
+
+        collectionLastStateFlow(bookSearchViewModel.searchPagingResult){
+            bookSearchAdapter.submitData(it)
+        }
 
         binding.etSearch.setText(bookSearchViewModel.query)
         binding.etSearch.text = Editable.Factory.getInstance().newEditable(bookSearchViewModel.query)
     }
 
+
+
     private fun setupRecyclerView() {
-        bookSearchAdapter = BookSearchAdapter()
+//        bookSearchAdapter = BookSearchAdapter()
+        bookSearchAdapter = BookSearchPagingAdapter()
         bookSearchAdapter.setOnItemClickListener {
 
             val action = SearchFragmentDirections.actionFragmentSearchToFragmentBook(it)
@@ -85,7 +101,8 @@ class SearchFragment : Fragment() {
                     Log.d(TAG, "text:$it");
                     val query = text.toString().trim()
                     if (query.isNotEmpty()) {
-                        bookSearchViewModel.searchBooks(text.toString())
+//                        bookSearchViewModel.searchBooks(text.toString())
+                        bookSearchViewModel.searchBooksPaging(text.toString())
                         bookSearchViewModel.query = query
                     }
                 }
