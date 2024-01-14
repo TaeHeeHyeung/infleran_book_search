@@ -96,6 +96,6 @@ dependencies {
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    //Pagineg
+    // Paging
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 }

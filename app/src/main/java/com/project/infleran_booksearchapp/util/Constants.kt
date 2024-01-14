@@ -3,7 +3,7 @@ package com.project.infleran_booksearchapp.util
 import com.project.infleran_booksearchapp.BuildConfig
 
 object Constants {
-    val SEARCH_BOOKS_TIME_DELAY: Long = 100
+    val SEARCH_BOOKS_TIME_DELAY: Long = 200
     const val BASE_URL = "https://dapi.kakao.com/"
 
     //local.properties 에 선언
