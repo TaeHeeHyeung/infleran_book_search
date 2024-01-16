@@ -25,7 +25,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -98,4 +101,7 @@ dependencies {
 
     // Paging
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+
+    // Workmanger
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
