@@ -120,8 +120,7 @@ class SearchFragment : Fragment() {
     private fun searchBooks() {
         binding.etSearch.addTextChangedListener { text: Editable? ->
             job?.cancel()
-            job = CoroutineScope(Dispatchers.Default).launch {
-                delay(Constants.SEARCH_BOOKS_TIME_DELAY)
+            job = CoroutineScope(Dispatchers.Default).launch { delay(Constants.SEARCH_BOOKS_TIME_DELAY)
                 text?.let {
                     Log.d(TAG, "text:$it");
                     val query = text.toString().trim()
@@ -143,7 +142,6 @@ class SearchFragment : Fragment() {
 
             binding.tvEmptyList.isVisible = isListEmpty
             binding.rvSearchResult.isVisible = !isListEmpty
-
             binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
 
 //            binding.btnRetry.isVisible = loadState.refresh is LoadState.Error

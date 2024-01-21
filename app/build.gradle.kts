@@ -1,11 +1,13 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
-    //id("kotlin-kapt")
+    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
+    //id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -110,10 +112,13 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.41")
-    ksp("com.google.dagger:hilt-compiler:2.41")
+    implementation("com.google.dagger:hilt-android:2.50")
+//    ksp("com.google.dagger:hilt-android-compiler:2.44")
+//    kapt("com.google.dagger:hilt-compiler:2.50")
+    ksp("com.google.dagger:hilt-compiler:2.50")
 
     // ViewModel delegate
-    implementation("androidx.activity:activity-ktx:1.8.2")
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    implementation ("androidx.activity:activity-ktx:1.8.2")
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
 }
