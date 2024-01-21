@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,16 +20,19 @@ import com.project.infleran_booksearchapp.ui.adapter.BookSearchAdapter
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchPagingAdapter
 import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.project.infleran_booksearchapp.util.collectionLastStateFlow
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var bookSearchViewModel: BookSearchViewModel
+//    private lateinit var bookSearchViewModel: BookSearchViewModel
+    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
 
     //    private lateinit var bookSearchAdapter: BookSearchAdapter
     private lateinit var bookSearchAdapter: BookSearchPagingAdapter
@@ -43,7 +47,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bookSearchViewModel = (activity as MainActivity).bookSearchViewModel
+//        bookSearchViewModel = (activity as MainActivity).bookSearchViewModel
         setupRecyclerView()
         setupTouchHelper(view)
 

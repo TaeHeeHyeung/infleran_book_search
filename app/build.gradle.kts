@@ -44,6 +44,10 @@ android {
         buildConfig = true
     }
 
+//    kapt {
+//        correctErrorTypes = true
+//    }
+
 }
 
 dependencies {
@@ -104,4 +108,12 @@ dependencies {
 
     // Workmanger
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.41")
+    ksp("com.google.dagger:hilt-compiler:2.41")
+
+    // ViewModel delegate
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 }

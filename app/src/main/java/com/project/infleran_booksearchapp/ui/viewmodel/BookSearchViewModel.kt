@@ -16,23 +16,25 @@ import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.data.model.SearchResponse
 import com.project.infleran_booksearchapp.data.repository.BookSearchRepository
 import com.project.infleran_booksearchapp.worker.CacheDeleteWorker
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class BookSearchViewModel(
+
+@HiltViewModel
+class BookSearchViewModel @Inject constructor(
     private val bookSearchRepository: BookSearchRepository,
-    private val workmanager: WorkManager,
-    private val savedStateHandle: SavedStateHandle
+    private val workManager: WorkManager,
+    private val savedStateHandle: SavedStateHandle // 모듈에 설정 없이 주입 가능
 ) : ViewModel() {
     private val _searchResult = MutableLiveData<SearchResponse>()
     val searchResult: LiveData<SearchResponse> get() = _searchResult
@@ -127,13 +129,13 @@ class BookSearchViewModel(
             .setConstraints(constraints)
             .build()
 
-        workmanager.enqueueUniquePeriodicWork(
+        workManager.enqueueUniquePeriodicWork(
             WORKER_KEY, ExistingPeriodicWorkPolicy.REPLACE, workRequest
         )
     }
 
-    fun deleteWork() = workmanager.cancelUniqueWork(WORKER_KEY)
+    fun deleteWork() = workManager.cancelUniqueWork(WORKER_KEY)
 
     fun getWorkStatus(): LiveData<MutableList<WorkInfo>> =
-        workmanager.getWorkInfosForUniqueWorkLiveData(WORKER_KEY)
+        workManager.getWorkInfosForUniqueWorkLiveData(WORKER_KEY)
 }

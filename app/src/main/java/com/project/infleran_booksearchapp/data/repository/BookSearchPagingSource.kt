@@ -1,14 +1,14 @@
 package com.project.infleran_booksearchapp.data.repository
 
-import android.net.http.HttpException
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.project.infleran_booksearchapp.data.api.RetrofitInstance.api
+import com.project.infleran_booksearchapp.data.api.BookSearchAPI
 import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.util.Constants
 import java.io.IOException
 
 class BookSearchPagingSource(
+    private val api: BookSearchAPI,
     private val query: String,
     private val sort: String
 ) : PagingSource<Int, Book>() {

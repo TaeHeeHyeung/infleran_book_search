@@ -7,6 +7,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin") version "2.5.0" apply false
     kotlin("kapt") version "1.5.30"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10" apply false
+    id("com.google.dagger.hilt.android") version "2.41" apply false
 }
 
 

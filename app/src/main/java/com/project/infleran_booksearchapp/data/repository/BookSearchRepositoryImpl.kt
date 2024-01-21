@@ -9,7 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.project.infleran_booksearchapp.data.api.RetrofitInstance
+import com.project.infleran_booksearchapp.data.api.BookSearchAPI
 import com.project.infleran_booksearchapp.data.db.BookSearchDatabase
 import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.data.model.SearchResponse
@@ -22,16 +22,20 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class BookSearchRepositoryImpl(
+@Singleton
+class BookSearchRepositoryImpl @Inject constructor(
     private val db: BookSearchDatabase,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    private val api: BookSearchAPI
 ) : BookSearchRepository {
 
 
     override suspend fun searchBooks(query: String, sort: String, page: Int, size: Int)
             : Response<SearchResponse> {
-        return RetrofitInstance.api.searchBooks(query, sort, page, size)
+        return api.searchBooks(query, sort, page, size)
     }
 
     override suspend fun insertBook(book: Book) {
@@ -108,7 +112,7 @@ class BookSearchRepositoryImpl(
     }
 
     override fun searchBookPaging(query: String, sort: String): Flow<PagingData<Book>> {
-        val pagingSourceFactory = { BookSearchPagingSource(query, sort) }
+        val pagingSourceFactory = { BookSearchPagingSource(api, query, sort) }
         return Pager(
             config = PagingConfig(
                 pageSize = PAGING_SIZE,
