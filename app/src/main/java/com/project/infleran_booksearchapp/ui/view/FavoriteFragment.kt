@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,14 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.project.infleran_booksearchapp.databinding.FragmentFavoriteBinding
-import com.project.infleran_booksearchapp.ui.adapter.BookSearchAdapter
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchPagingAdapter
-import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.project.infleran_booksearchapp.util.collectionLastStateFlow
+import com.qualitybitz.booksearchapp.ui.viewmodel.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavoriteFragment : Fragment() {
@@ -32,7 +25,8 @@ class FavoriteFragment : Fragment() {
     private val binding get() = _binding!!
 
 //    private lateinit var bookSearchViewModel: BookSearchViewModel
-    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
+//    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
+    private val favoriteViewModel by activityViewModels<FavoriteViewModel>()
 
     //    private lateinit var bookSearchAdapter: BookSearchAdapter
     private lateinit var bookSearchAdapter: BookSearchPagingAdapter
@@ -76,7 +70,7 @@ class FavoriteFragment : Fragment() {
 //        collectionLastStateFlow(bookSearchViewModel.favoriteBooks()) {
 //            bookSearchAdapter.submitList(it)
 //        }
-        collectionLastStateFlow(bookSearchViewModel.favoritePagingBook) {
+        collectionLastStateFlow(favoriteViewModel.favoritePagingBook) {
             bookSearchAdapter.submitData(it)
         }
 
@@ -128,10 +122,10 @@ class FavoriteFragment : Fragment() {
                 val position = viewHolder.bindingAdapterPosition
                 val pagedBook = bookSearchAdapter.peek(position)
                 pagedBook?.let {
-                    bookSearchViewModel.deleteBook(pagedBook)
+                    favoriteViewModel.deleteBook(pagedBook)
                     Snackbar.make(view, "item has deleted", Snackbar.LENGTH_SHORT).apply {
                         setAction("Undo") {
-                            bookSearchViewModel.saveBook(pagedBook)
+                            favoriteViewModel.saveBook(pagedBook)
                         }
                     }.show()
                 }

@@ -1,39 +1,31 @@
 package com.project.infleran_booksearchapp.ui.view
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.infleran_booksearchapp.data.model.Book
 import com.project.infleran_booksearchapp.databinding.FragmentSearchBinding
-import com.project.infleran_booksearchapp.ui.adapter.BookSearchAdapter
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchLoadStateAdapter
 import com.project.infleran_booksearchapp.ui.adapter.BookSearchPagingAdapter
-import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
 import com.project.infleran_booksearchapp.util.Constants
 import com.project.infleran_booksearchapp.util.collectionLastStateFlow
+import com.qualitybitz.booksearchapp.ui.viewmodel.SearchViewModel
+import com.qualitybitz.booksearchapp.ui.viewmodel.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
@@ -49,7 +41,8 @@ class SearchFragment : Fragment() {
 
 
 //    private lateinit var bookSearchViewModel: BookSearchViewModel
-    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
+//    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
+    private val searchViewModel by activityViewModels<SearchViewModel>()
 
     //    private lateinit var bookSearchAdapter: BookSearchAdapter
     private lateinit var bookSearchAdapter: BookSearchPagingAdapter
@@ -75,13 +68,13 @@ class SearchFragment : Fragment() {
 //            bookSearchAdapter.submitList(books)
 //        })
 
-        collectionLastStateFlow(bookSearchViewModel.searchPagingResult) {
+        collectionLastStateFlow(searchViewModel.searchPagingResult) {
             bookSearchAdapter.submitData(it)
         }
 
-        binding.etSearch.setText(bookSearchViewModel.query)
+        binding.etSearch.setText(searchViewModel.query)
         binding.etSearch.text =
-            Editable.Factory.getInstance().newEditable(bookSearchViewModel.query)
+            Editable.Factory.getInstance().newEditable(searchViewModel.query)
 
         setupLoadState()
     }
@@ -125,8 +118,8 @@ class SearchFragment : Fragment() {
                     Log.d(TAG, "text:$it");
                     val query = text.toString().trim()
                     if (query.isNotEmpty()) {
-                        bookSearchViewModel.searchBooksPaging(text.toString())
-                        bookSearchViewModel.query = query
+                        searchViewModel.searchBooksPaging(text.toString())
+                        searchViewModel.query = query
                     }
                 }
             }

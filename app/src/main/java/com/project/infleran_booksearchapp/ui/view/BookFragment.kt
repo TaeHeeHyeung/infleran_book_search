@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.project.infleran_booksearchapp.databinding.FragmentBookBinding
-import com.project.infleran_booksearchapp.ui.viewmodel.BookSearchViewModel
+import com.qualitybitz.booksearchapp.ui.viewmodel.BookViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,7 +24,9 @@ class BookFragment : Fragment() {
     private val args by navArgs<BookFragmentArgs>()
 //    private lateinit var bookSearchViewModel: BookSearchViewModel
 
-    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
+//    private val bookSearchViewModel by activityViewModels<BookSearchViewModel>()
+    private val bookViewModel by activityViewModels<BookViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,7 +47,7 @@ class BookFragment : Fragment() {
             loadUrl(book.url)
         }
         binding.floatingBtn.setOnClickListener {
-            bookSearchViewModel.saveBook(book)
+            bookViewModel.saveBook(book)
             Snackbar.make(view, "Book has saved", Snackbar.LENGTH_SHORT).show()
         }
     }

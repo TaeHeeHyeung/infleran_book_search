@@ -102,10 +102,10 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Paging
-    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
 
     // Workmanger
-    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.50")
