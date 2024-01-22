@@ -31,7 +31,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val httpLoggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
@@ -79,4 +80,8 @@ object AppModule {
     @Provides
     fun provideWorkManager(@ApplicationContext context: Context): WorkManager =
         WorkManager.getInstance(context)
+
+    @Singleton
+    @Provides
+    fun provideCacheDeleteResult(): String = "Cache has Deleted by Hilt"
 }

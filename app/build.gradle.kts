@@ -46,10 +46,6 @@ android {
         buildConfig = true
     }
 
-//    kapt {
-//        correctErrorTypes = true
-//    }
-
 }
 
 dependencies {
@@ -109,16 +105,18 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
     // Workmanger
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.50")
-//    ksp("com.google.dagger:hilt-android-compiler:2.44")
-//    kapt("com.google.dagger:hilt-compiler:2.50")
     ksp("com.google.dagger:hilt-compiler:2.50")
 
     // ViewModel delegate
-
     implementation ("androidx.activity:activity-ktx:1.8.2")
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
+
+    // Hilt extension
+    implementation ("androidx.hilt:hilt-work:1.1.0")
+    ksp ("androidx.hilt:hilt-compiler:1.1.0")
+
 }

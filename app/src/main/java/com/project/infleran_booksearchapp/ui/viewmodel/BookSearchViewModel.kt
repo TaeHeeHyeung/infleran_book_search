@@ -121,7 +121,7 @@ class BookSearchViewModel @Inject constructor(
     // WorkManger(){
     fun setWork() {
         val constraints = Constraints.Builder()
-            .setRequiresCharging(true) // 충전 중 일떄
+//            .setRequiresCharging(true) // 충전 중 일떄
             .setRequiresBatteryNotLow(true) // 배터리 잔량이 낮지 않을 때
             .build()
 
