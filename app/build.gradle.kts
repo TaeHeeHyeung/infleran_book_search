@@ -1,31 +1,30 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-parcelize")
-    id("kotlin-kapt")
-    id("com.google.devtools.ksp")
-    //id("dagger.hilt.android.plugin")
-    id("com.google.dagger.hilt.android")
+    id(Plugins.ANDROID_APPLICATION)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.SECRET_GRADLE_PLUGIN)
+    id(Plugins.SAFE_ARGS)
+    id(Plugins.KOTLIN_PARCELIZE)
+    id(Plugins.KOTLIN_KAPT)
+    id(Plugins.DEV_TOOLS_KSP)
+    id(Plugins.HILT_PLUGIN)
 }
 
 android {
     namespace = "com.project.infleran_booksearchapp"
-    compileSdk = 34
+    compileSdk = DefaultConfig.COMPILE_SDK_VERSION
 
     defaultConfig {
         applicationId = "com.project.infleran_booksearchapp"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = DefaultConfig.MIN_SDK_VERSION
+        targetSdk = DefaultConfig.TARGET_SDK_VERSION
+        versionCode = DefaultConfig.VERSION_CODE
+        versionName = DefaultConfig.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
+        named("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -34,11 +33,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     buildFeatures {
@@ -112,11 +111,11 @@ dependencies {
     ksp("com.google.dagger:hilt-compiler:2.50")
 
     // ViewModel delegate
-    implementation ("androidx.activity:activity-ktx:1.8.2")
-    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
     // Hilt extension
-    implementation ("androidx.hilt:hilt-work:1.1.0")
-    ksp ("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-work:1.1.0")
+    ksp("androidx.hilt:hilt-compiler:1.1.0")
 
 }
